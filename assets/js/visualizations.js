@@ -1,23 +1,723 @@
 "use strict";
 
-const visualCanvases=document.querySelectorAll("canvas[data-visual]");
-const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const visualCanvases = [
+  ...document.querySelectorAll(
+    "canvas[data-visual]"
+  )
+];
 
-function setupCanvas(canvas){const rect=canvas.getBoundingClientRect();const ratio=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(rect.width*ratio));canvas.height=Math.max(1,Math.round(rect.height*ratio));const ctx=canvas.getContext("2d");ctx.setTransform(ratio,0,0,ratio,0,0);return{ctx,width:rect.width,height:rect.height};}
-function line(ctx,x1,y1,x2,y2,color,width=2,glow=0){ctx.save();ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap="round";ctx.shadowColor=color;ctx.shadowBlur=glow;ctx.stroke();ctx.restore();}
-function circle(ctx,x,y,r,color,glow=0){ctx.save();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=glow;ctx.fill();ctx.restore();}
-function text(ctx,value,x,y,color,size=12){ctx.save();ctx.fillStyle=color;ctx.font=`700 ${size}px Arial`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(value,x,y);ctx.restore();}
-function clear(ctx,w,h){ctx.clearRect(0,0,w,h);const g=ctx.createRadialGradient(w/2,h/2,10,w/2,h/2,Math.max(w,h)*.62);g.addColorStop(0,"rgba(114,240,255,.07)");g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);}
+const reducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
 
-function drawHelix(canvas,time){const{ctx,width:w,height:h}=setupCanvas(canvas);clear(ctx,w,h);const cx=w/2,top=45,bottom=h-45,amp=Math.min(w*.25,135),turns=3.1,steps=120;const a=[],b=[];for(let i=0;i<=steps;i++){const p=i/steps,y=top+(bottom-top)*p,angle=p*Math.PI*2*turns+time*.0012;a.push({x:cx+Math.sin(angle)*amp,y,d:Math.cos(angle),angle});b.push({x:cx-Math.sin(angle)*amp,y,d:-Math.cos(angle),angle});}for(let i=0;i<=steps;i+=6){const p=a[i],q=b[i],front=(Math.cos(p.angle)+1)/2,color=i%12===0?"#79f5ff":"#be9cff";line(ctx,p.x,p.y,q.x,q.y,color,2+front*2,9);text(ctx,i%12===0?"A–T":"G–C",(p.x+q.x)/2,p.y-10,color,10);}for(let i=1;i<a.length;i++){const da=(a[i].d+1)/2,db=(b[i].d+1)/2;line(ctx,a[i-1].x,a[i-1].y,a[i].x,a[i].y,`rgba(121,245,255,${.42+da*.58})`,3+da*3.5,12);line(ctx,b[i-1].x,b[i-1].y,b[i].x,b[i].y,`rgba(190,156,255,${.42+db*.58})`,3+db*3.5,12);} }
+const canvasStates = new WeakMap();
+let animationFrameId = null;
 
-function drawBases(canvas,time){const{ctx,width:w,height:h}=setupCanvas(canvas);clear(ctx,w,h);const colors={A:"#79f5ff",T:"#9bffd5",G:"#be9cff",C:"#f2a7e8"};const pairs=[["A","T"],["G","C"],["T","A"],["C","G"]];const spacing=h/(pairs.length+1);pairs.forEach((pair,i)=>{const y=spacing*(i+1),pulse=1+Math.sin(time*.002+i)*.08,x1=w*.28,x2=w*.72;line(ctx,x1+34,y,x2-34,y,"rgba(220,250,255,.45)",3,8);circle(ctx,x1,y,32*pulse,colors[pair[0]],16);circle(ctx,x2,y,32*pulse,colors[pair[1]],16);text(ctx,pair[0],x1,y,"#041017",20);text(ctx,pair[1],x2,y,"#041017",20);text(ctx,pair[0]+"  ↔  "+pair[1],w/2,y,"#dffcff",12);});}
+function resizeCanvas(canvas) {
+  const rectangle =
+    canvas.getBoundingClientRect();
 
-function drawReplication(canvas,time){const{ctx,width:w,height:h}=setupCanvas(canvas);clear(ctx,w,h);const cx=w/2,top=35,bottom=h-35,splitY=top+(bottom-top)*.48+Math.sin(time*.0015)*8,amp=Math.min(w*.17,90);for(let y=top;y<splitY;y+=18){const p=(y-top)/(splitY-top),angle=p*Math.PI*4;const x1=cx+Math.sin(angle)*amp,x2=cx-Math.sin(angle)*amp;line(ctx,x1,y,x2,y,"rgba(121,245,255,.75)",2,7);circle(ctx,x1,y,3,"#79f5ff",7);circle(ctx,x2,y,3,"#be9cff",7);}line(ctx,cx-amp,splitY,cx-w*.3,bottom,"#79f5ff",5,12);line(ctx,cx+amp,splitY,cx+w*.3,bottom,"#be9cff",5,12);line(ctx,cx-amp*.75,splitY,cx-w*.12,bottom,"#9bffd5",4,10);line(ctx,cx+amp*.75,splitY,cx+w*.12,bottom,"#f2a7e8",4,10);circle(ctx,cx,splitY,18,"#ffffff",18);text(ctx,"הליקאז",cx,splitY,"#041017",10);text(ctx,"גדיל חדש",w*.2,bottom-15,"#9bffd5",11);text(ctx,"גדיל חדש",w*.8,bottom-15,"#f2a7e8",11);}
+  const ratio = Math.min(
+    window.devicePixelRatio || 1,
+    2
+  );
 
-function drawProtein(canvas,time){const{ctx,width:w,height:h}=setupCanvas(canvas);clear(ctx,w,h);const y=h*.47;const nodes=[{x:w*.12,label:"DNA",color:"#79f5ff"},{x:w*.38,label:"mRNA",color:"#9bffd5"},{x:w*.64,label:"ריבוזום",color:"#be9cff"},{x:w*.88,label:"חלבון",color:"#f2a7e8"}];nodes.forEach((n,i)=>{const pulse=1+Math.sin(time*.002+i)*.06;circle(ctx,n.x,y,35*pulse,n.color,18);text(ctx,n.label,n.x,y,"#041017",i===2?11:13);if(i<nodes.length-1){line(ctx,n.x+38,y,nodes[i+1].x-38,y,"rgba(220,250,255,.55)",3,8);const arrowX=(n.x+nodes[i+1].x)/2;text(ctx,"←",arrowX,y-15,"#dffcff",19);}});const codons=["AUG","GGC","UAC","CCA"];codons.forEach((c,i)=>text(ctx,c,w*.29+i*42,h*.72,i%2?"#9bffd5":"#79f5ff",11));for(let i=0;i<9;i++){const angle=i*.75+time*.001,x=w*.88+Math.cos(angle)*18,y2=h*.72+Math.sin(angle)*18+i*3;circle(ctx,x,y2,5,i%2?"#f2a7e8":"#be9cff",7);}}
+  const width = Math.max(
+    1,
+    Math.round(rectangle.width)
+  );
 
-function render(canvas,time){switch(canvas.dataset.visual){case"helix":drawHelix(canvas,time);break;case"bases":drawBases(canvas,time);break;case"replication":drawReplication(canvas,time);break;case"protein":drawProtein(canvas,time);break;}}
-function frame(time){visualCanvases.forEach(canvas=>render(canvas,time));if(!reducedMotion)requestAnimationFrame(frame);}
-window.addEventListener("resize",()=>visualCanvases.forEach(canvas=>render(canvas,performance.now())));
-if(visualCanvases.length){if(reducedMotion)visualCanvases.forEach(canvas=>render(canvas,0));else requestAnimationFrame(frame);}
+  const height = Math.max(
+    1,
+    Math.round(rectangle.height)
+  );
+
+  const pixelWidth = Math.round(
+    width * ratio
+  );
+
+  const pixelHeight = Math.round(
+    height * ratio
+  );
+
+  if (
+    canvas.width !== pixelWidth ||
+    canvas.height !== pixelHeight
+  ) {
+    canvas.width = pixelWidth;
+    canvas.height = pixelHeight;
+  }
+
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    return null;
+  }
+
+  context.setTransform(
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
+  );
+
+  const state = {
+    context,
+    width,
+    height
+  };
+
+  canvasStates.set(canvas, state);
+  return state;
+}
+
+function line(
+  context,
+  startX,
+  startY,
+  endX,
+  endY,
+  color,
+  width = 2,
+  glow = 0
+) {
+  context.save();
+  context.beginPath();
+  context.moveTo(startX, startY);
+  context.lineTo(endX, endY);
+  context.strokeStyle = color;
+  context.lineWidth = width;
+  context.lineCap = "round";
+  context.shadowColor = color;
+  context.shadowBlur = glow;
+  context.stroke();
+  context.restore();
+}
+
+function circle(
+  context,
+  x,
+  y,
+  radius,
+  color,
+  glow = 0
+) {
+  context.save();
+  context.beginPath();
+  context.arc(
+    x,
+    y,
+    radius,
+    0,
+    Math.PI * 2
+  );
+  context.fillStyle = color;
+  context.shadowColor = color;
+  context.shadowBlur = glow;
+  context.fill();
+  context.restore();
+}
+
+function text(
+  context,
+  value,
+  x,
+  y,
+  color,
+  size = 12
+) {
+  context.save();
+  context.fillStyle = color;
+  context.font = `700 ${size}px Arial`;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(value, x, y);
+  context.restore();
+}
+
+function clear(context, width, height) {
+  context.clearRect(0, 0, width, height);
+
+  const gradient =
+    context.createRadialGradient(
+      width / 2,
+      height / 2,
+      10,
+      width / 2,
+      height / 2,
+      Math.max(width, height) * 0.62
+    );
+
+  gradient.addColorStop(
+    0,
+    "rgba(114, 240, 255, 0.07)"
+  );
+
+  gradient.addColorStop(
+    1,
+    "rgba(0, 0, 0, 0)"
+  );
+
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, width, height);
+}
+
+function drawHelix(state, time) {
+  const {
+    context,
+    width,
+    height
+  } = state;
+
+  clear(context, width, height);
+
+  const centerX = width / 2;
+  const top = 45;
+  const bottom = height - 45;
+  const amplitude = Math.min(
+    width * 0.25,
+    135
+  );
+  const turns = 3.1;
+  const steps = 120;
+  const strandOne = [];
+  const strandTwo = [];
+
+  for (
+    let index = 0;
+    index <= steps;
+    index += 1
+  ) {
+    const progress = index / steps;
+    const y = top +
+      (bottom - top) * progress;
+    const angle = progress *
+      Math.PI * 2 * turns +
+      time * 0.0012;
+
+    strandOne.push({
+      x: centerX +
+        Math.sin(angle) * amplitude,
+      y,
+      depth: Math.cos(angle),
+      angle
+    });
+
+    strandTwo.push({
+      x: centerX -
+        Math.sin(angle) * amplitude,
+      y,
+      depth: -Math.cos(angle),
+      angle
+    });
+  }
+
+  for (
+    let index = 0;
+    index <= steps;
+    index += 6
+  ) {
+    const first = strandOne[index];
+    const second = strandTwo[index];
+    const front =
+      (Math.cos(first.angle) + 1) / 2;
+    const color = index % 12 === 0
+      ? "#79f5ff"
+      : "#be9cff";
+
+    line(
+      context,
+      first.x,
+      first.y,
+      second.x,
+      second.y,
+      color,
+      2 + front * 2,
+      9
+    );
+
+    text(
+      context,
+      index % 12 === 0 ? "A–T" : "G–C",
+      (first.x + second.x) / 2,
+      first.y - 10,
+      color,
+      10
+    );
+  }
+
+  for (
+    let index = 1;
+    index < strandOne.length;
+    index += 1
+  ) {
+    const firstDepth =
+      (strandOne[index].depth + 1) / 2;
+    const secondDepth =
+      (strandTwo[index].depth + 1) / 2;
+
+    line(
+      context,
+      strandOne[index - 1].x,
+      strandOne[index - 1].y,
+      strandOne[index].x,
+      strandOne[index].y,
+      `rgba(121, 245, 255, ${
+        0.42 + firstDepth * 0.58
+      })`,
+      3 + firstDepth * 3.5,
+      12
+    );
+
+    line(
+      context,
+      strandTwo[index - 1].x,
+      strandTwo[index - 1].y,
+      strandTwo[index].x,
+      strandTwo[index].y,
+      `rgba(190, 156, 255, ${
+        0.42 + secondDepth * 0.58
+      })`,
+      3 + secondDepth * 3.5,
+      12
+    );
+  }
+}
+
+function drawBases(state, time) {
+  const {
+    context,
+    width,
+    height
+  } = state;
+
+  clear(context, width, height);
+
+  const colors = {
+    A: "#79f5ff",
+    T: "#9bffd5",
+    G: "#be9cff",
+    C: "#f2a7e8"
+  };
+
+  const pairs = [
+    ["A", "T"],
+    ["G", "C"],
+    ["T", "A"],
+    ["C", "G"]
+  ];
+
+  const spacing =
+    height / (pairs.length + 1);
+
+  pairs.forEach((pair, index) => {
+    const y = spacing * (index + 1);
+    const pulse = 1 +
+      Math.sin(time * 0.002 + index) *
+      0.08;
+    const firstX = width * 0.28;
+    const secondX = width * 0.72;
+
+    line(
+      context,
+      firstX + 34,
+      y,
+      secondX - 34,
+      y,
+      "rgba(220, 250, 255, 0.45)",
+      3,
+      8
+    );
+
+    circle(
+      context,
+      firstX,
+      y,
+      32 * pulse,
+      colors[pair[0]],
+      16
+    );
+
+    circle(
+      context,
+      secondX,
+      y,
+      32 * pulse,
+      colors[pair[1]],
+      16
+    );
+
+    text(
+      context,
+      pair[0],
+      firstX,
+      y,
+      "#041017",
+      20
+    );
+
+    text(
+      context,
+      pair[1],
+      secondX,
+      y,
+      "#041017",
+      20
+    );
+
+    text(
+      context,
+      `${pair[0]}  ↔  ${pair[1]}`,
+      width / 2,
+      y,
+      "#dffcff",
+      12
+    );
+  });
+}
+
+function drawReplication(state, time) {
+  const {
+    context,
+    width,
+    height
+  } = state;
+
+  clear(context, width, height);
+
+  const centerX = width / 2;
+  const top = 35;
+  const bottom = height - 35;
+  const splitY = top +
+    (bottom - top) * 0.48 +
+    Math.sin(time * 0.0015) * 8;
+  const amplitude = Math.min(
+    width * 0.17,
+    90
+  );
+
+  for (
+    let y = top;
+    y < splitY;
+    y += 18
+  ) {
+    const progress =
+      (y - top) / (splitY - top);
+    const angle = progress * Math.PI * 4;
+    const firstX = centerX +
+      Math.sin(angle) * amplitude;
+    const secondX = centerX -
+      Math.sin(angle) * amplitude;
+
+    line(
+      context,
+      firstX,
+      y,
+      secondX,
+      y,
+      "rgba(121, 245, 255, 0.75)",
+      2,
+      7
+    );
+    circle(
+      context,
+      firstX,
+      y,
+      3,
+      "#79f5ff",
+      7
+    );
+    circle(
+      context,
+      secondX,
+      y,
+      3,
+      "#be9cff",
+      7
+    );
+  }
+
+  line(
+    context,
+    centerX - amplitude,
+    splitY,
+    centerX - width * 0.3,
+    bottom,
+    "#79f5ff",
+    5,
+    12
+  );
+  line(
+    context,
+    centerX + amplitude,
+    splitY,
+    centerX + width * 0.3,
+    bottom,
+    "#be9cff",
+    5,
+    12
+  );
+  line(
+    context,
+    centerX - amplitude * 0.75,
+    splitY,
+    centerX - width * 0.12,
+    bottom,
+    "#9bffd5",
+    4,
+    10
+  );
+  line(
+    context,
+    centerX + amplitude * 0.75,
+    splitY,
+    centerX + width * 0.12,
+    bottom,
+    "#f2a7e8",
+    4,
+    10
+  );
+  circle(
+    context,
+    centerX,
+    splitY,
+    18,
+    "#ffffff",
+    18
+  );
+  text(
+    context,
+    "הליקאז",
+    centerX,
+    splitY,
+    "#041017",
+    10
+  );
+  text(
+    context,
+    "גדיל חדש",
+    width * 0.2,
+    bottom - 15,
+    "#9bffd5",
+    11
+  );
+  text(
+    context,
+    "גדיל חדש",
+    width * 0.8,
+    bottom - 15,
+    "#f2a7e8",
+    11
+  );
+}
+
+function drawProtein(state, time) {
+  const {
+    context,
+    width,
+    height
+  } = state;
+
+  clear(context, width, height);
+
+  const centerY = height * 0.47;
+  const nodes = [
+    {
+      x: width * 0.12,
+      label: "DNA",
+      color: "#79f5ff"
+    },
+    {
+      x: width * 0.38,
+      label: "mRNA",
+      color: "#9bffd5"
+    },
+    {
+      x: width * 0.64,
+      label: "ריבוזום",
+      color: "#be9cff"
+    },
+    {
+      x: width * 0.88,
+      label: "חלבון",
+      color: "#f2a7e8"
+    }
+  ];
+
+  nodes.forEach((node, index) => {
+    const pulse = 1 +
+      Math.sin(time * 0.002 + index) *
+      0.06;
+
+    circle(
+      context,
+      node.x,
+      centerY,
+      35 * pulse,
+      node.color,
+      18
+    );
+
+    text(
+      context,
+      node.label,
+      node.x,
+      centerY,
+      "#041017",
+      index === 2 ? 11 : 13
+    );
+
+    if (index < nodes.length - 1) {
+      line(
+        context,
+        node.x + 38,
+        centerY,
+        nodes[index + 1].x - 38,
+        centerY,
+        "rgba(220, 250, 255, 0.55)",
+        3,
+        8
+      );
+
+      text(
+        context,
+        "←",
+        (node.x + nodes[index + 1].x) / 2,
+        centerY - 15,
+        "#dffcff",
+        19
+      );
+    }
+  });
+
+  const codons = [
+    "AUG",
+    "GGC",
+    "UAC",
+    "CCA"
+  ];
+
+  codons.forEach((codon, index) => {
+    text(
+      context,
+      codon,
+      width * 0.29 + index * 42,
+      height * 0.72,
+      index % 2 ? "#9bffd5" : "#79f5ff",
+      11
+    );
+  });
+
+  for (
+    let index = 0;
+    index < 9;
+    index += 1
+  ) {
+    const angle =
+      index * 0.75 + time * 0.001;
+    const x = width * 0.88 +
+      Math.cos(angle) * 18;
+    const y = height * 0.72 +
+      Math.sin(angle) * 18 +
+      index * 3;
+
+    circle(
+      context,
+      x,
+      y,
+      5,
+      index % 2 ? "#f2a7e8" : "#be9cff",
+      7
+    );
+  }
+}
+
+function render(canvas, time) {
+  const state = canvasStates.get(canvas) ||
+    resizeCanvas(canvas);
+
+  if (!state) {
+    return;
+  }
+
+  switch (canvas.dataset.visual) {
+    case "helix":
+      drawHelix(state, time);
+      break;
+    case "bases":
+      drawBases(state, time);
+      break;
+    case "replication":
+      drawReplication(state, time);
+      break;
+    case "protein":
+      drawProtein(state, time);
+      break;
+    default:
+      break;
+  }
+}
+
+function frame(time) {
+  visualCanvases.forEach((canvas) => {
+    render(canvas, time);
+  });
+
+  animationFrameId =
+    window.requestAnimationFrame(frame);
+}
+
+function renderStaticFrame() {
+  visualCanvases.forEach((canvas) => {
+    resizeCanvas(canvas);
+    render(canvas, 0);
+  });
+}
+
+function handleResize() {
+  visualCanvases.forEach((canvas) => {
+    resizeCanvas(canvas);
+    render(canvas, performance.now());
+  });
+}
+
+function handleVisibilityChange() {
+  if (reducedMotion) {
+    return;
+  }
+
+  if (document.hidden) {
+    if (animationFrameId) {
+      window.cancelAnimationFrame(
+        animationFrameId
+      );
+    }
+
+    animationFrameId = null;
+  } else if (!animationFrameId) {
+    animationFrameId =
+      window.requestAnimationFrame(frame);
+  }
+}
+
+window.addEventListener(
+  "resize",
+  handleResize
+);
+
+document.addEventListener(
+  "visibilitychange",
+  handleVisibilityChange
+);
+
+if (visualCanvases.length) {
+  renderStaticFrame();
+
+  if (!reducedMotion) {
+    animationFrameId =
+      window.requestAnimationFrame(frame);
+  }
+}
+
