@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="מבוא ל־DNA: תפקידו, מיקומו בתא והמשימות הביולוגיות המרכזיות שלו.">
+  <meta name="theme-color" content="#050810">
+  <title>מהו DNA? | DNA Future Lab</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="דף הבית">
+      <span class="brand-mark">DNA</span>
+      <span class="brand-text">
+        <strong>Future Lab</strong>
+        <small>הקוד של החיים</small>
+      </span>
+    </a>
+    <button class="menu-btn" type="button" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="sidebar">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="overlay" data-close-menu></div>
+  <aside class="sidebar" id="sidebar" role="dialog" aria-modal="true" aria-label="מרכז הניווט" aria-hidden="true">
+    <div class="sidebar-head">
+      <strong>מרכז הניווט</strong>
+      <button class="close-btn" type="button" data-close-menu aria-label="סגירת תפריט">×</button>
+    </div>
+    <nav class="side-nav" aria-label="ניווט ראשי">
+      <a href="../index.html">עמוד הבית</a>
+      <p>יסודות ה־DNA</p>
+      <a class="active" href="what-is-dna.html" aria-current="page">מהו DNA?</a>
+      <a href="double-helix.html">מבנה הסליל הכפול</a>
+      <a href="bases.html">הבסיסים החנקניים</a>
+      <a href="genes-chromosomes.html">גנים וכרומוזומים</a>
+      <p>מנגנונים</p>
+      <a href="replication.html">שכפול DNA</a>
+      <a href="protein-synthesis.html">מ־DNA לחלבון</a>
+    </nav>
+  </aside>
+
+  <main>
+    <section class="page-hero">
+      <span class="chapter">CHAPTER 01</span>
+      <h1>מהו DNA?</h1>
+      <p>המולקולה הנושאת את הוראות הבנייה, הפעילות וההמשכיות של היצורים החיים התאיים.</p>
+    </section>
+
+    <div class="content-layout">
+      <article class="article">
+        <section class="info-card" id="biological-code">
+          <h2>הקוד הביולוגי</h2>
+          <p>DNA הוא קיצור של חומצה דאוקסיריבונוקלאית. הוא מכיל מידע תורשתי הכתוב כרצף של ארבעה בסיסים. אזורים מסוימים ברצף נקראים גנים, והם משמשים כהוראות ליצירת תוצרים פעילים, ובהם RNA וחלבונים.</p>
+        </section>
+
+        <section class="info-card" id="cell-location">
+          <h2>היכן הוא נמצא?</h2>
+          <p>בתאים אנושיים רוב ה־DNA נמצא בגרעין התא, כשהוא ארוז בכרומוזומים. כמות קטנה נוספת נמצאת במיטוכונדריה. אצל חיידקים, שאין להם גרעין תחום, ה־DNA נמצא באזור הנוקלאואיד.</p>
+          <div class="fact-list">
+            <div class="fact"><strong>גרעין התא</strong><span>המאגר העיקרי בתאים אאוקריוטיים</span></div>
+            <div class="fact"><strong>מיטוכונדריה</strong><span>מחזיקה DNA מעגלי קטן משלה</span></div>
+          </div>
+        </section>
+
+        <section class="info-card" id="core-roles">
+          <h2>שלוש משימות מרכזיות</h2>
+          <ul>
+            <li>שמירת מידע ביולוגי לאורך זמן.</li>
+            <li>העתקת המידע לפני חלוקת התא.</li>
+            <li>העברת הוראות לייצור RNA וחלבונים.</li>
+          </ul>
+        </section>
+
+        <section class="info-card" id="sources">
+          <h2>מקורות להעמקה</h2>
+          <ul class="source-list">
+            <li><a href="https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet">NHGRI — דף מידע על DNA</a></li>
+            <li><a href="https://www.genome.gov/genetics-glossary/Deoxyribonucleic-Acid-DNA">NHGRI — מילון גנטיקה: DNA</a></li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a href="../index.html">→ חזרה לבית</a>
+          <a href="double-helix.html">הפרק הבא: הסליל הכפול ←</a>
+        </div>
+      </article>
+
+      <aside class="page-aside" aria-label="תוכן העמוד">
+        <strong>בעמוד זה</strong>
+        <a href="#biological-code">הקוד הביולוגי</a>
+        <a href="#cell-location">מיקום בתא</a>
+        <a href="#core-roles">משימות מרכזיות</a>
+        <a href="#sources">מקורות</a>
+      </aside>
+    </div>
+  </main>
+
+  <footer><span>DNA Future Lab</span><span>פרק 01</span></footer>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

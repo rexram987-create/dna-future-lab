@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="זרימת מידע גנטי מ־DNA ל־RNA ולחלבון באמצעות שעתוק ותרגום.">
+  <meta name="theme-color" content="#050810">
+  <title>מ־DNA לחלבון | DNA Future Lab</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/visualizations.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="דף הבית"><span class="brand-mark">DNA</span><span class="brand-text"><strong>Future Lab</strong><small>הקוד של החיים</small></span></a>
+    <button class="menu-btn" type="button" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
+  </header>
+  <div class="overlay" data-close-menu></div>
+  <aside class="sidebar" id="sidebar" role="dialog" aria-modal="true" aria-label="מרכז הניווט" aria-hidden="true">
+    <div class="sidebar-head"><strong>מרכז הניווט</strong><button class="close-btn" type="button" data-close-menu aria-label="סגירת תפריט">×</button></div>
+    <nav class="side-nav" aria-label="ניווט ראשי"><a href="../index.html">עמוד הבית</a><a href="what-is-dna.html">מהו DNA?</a><a href="double-helix.html">מבנה הסליל הכפול</a><a href="bases.html">הבסיסים החנקניים</a><a href="genes-chromosomes.html">גנים וכרומוזומים</a><a href="replication.html">שכפול DNA</a><a class="active" href="protein-synthesis.html" aria-current="page">מ־DNA לחלבון</a></nav>
+  </aside>
+
+  <main>
+    <section class="page-hero"><span class="chapter">CHAPTER 06</span><h1>מ־DNA לחלבון</h1><p>כיצד הוראה הכתובה ברצף גנטי הופכת למולקולה פעילה בתא.</p></section>
+    <div class="content-layout">
+      <article class="article">
+        <section class="visual-panel" aria-label="המחשה מונפשת ופשוטה של זרימת המידע הגנטי">
+          <span class="visual-label top">CENTRAL DOGMA</span>
+          <canvas data-visual="protein">הדפדפן שלך אינו תומך בהמחשת Canvas.</canvas>
+          <span class="visual-label bottom">DNA → RNA → חלבון</span>
+        </section>
+        <section class="info-card" id="transcription"><h2>שלב ראשון: שעתוק</h2><p>קטע DNA משמש כתבנית ליצירת מולקולת RNA. בגנים המקודדים חלבון, RNA שליח מעובד נושא עותק עבודה של ההוראה אל הריבוזום.</p></section>
+        <section class="info-card" id="translation">
+          <h2>שלב שני: תרגום</h2>
+          <p>הריבוזום קורא את ה־mRNA בשלשות בסיסים הנקראות קודונים. רוב הקודונים מקודדים חומצת אמינו; קודון התחלה מסמן לריבוזום היכן להתחיל, ושלושה קודוני עצירה מסמנים את סיום התרגום.</p>
+          <div class="process-steps"><div><b>01</b><strong>DNA</strong><span>המידע המקורי נשמר בגנום.</span></div><div><b>02</b><strong>mRNA</strong><span>עותק עבודה נושא את הרצף.</span></div><div><b>03</b><strong>חלבון</strong><span>חומצות אמינו מתחברות ומתקפלות.</span></div></div>
+          <div class="fact-list"><div class="fact"><strong>DNA → RNA</strong><span>שעתוק</span></div><div class="fact"><strong>RNA → חלבון</strong><span>תרגום</span></div></div>
+        </section>
+        <section class="info-card" id="protein-roles"><h2>מדוע חלבונים חשובים?</h2><p>חלבונים משמשים כאנזימים, קולטנים, נוגדנים, מרכיבי מבנה ומערכות הובלה. הם מבצעים חלק גדול מן הפעילות המעשית של התא.</p></section>
+        <section class="info-card" id="sources"><h2>מקורות להעמקה</h2><ul class="source-list"><li><a href="https://www.ncbi.nlm.nih.gov/books/NBK26887/">NCBI Bookshelf — מ־DNA ל־RNA</a></li><li><a href="https://www.genome.gov/about-genomics/educational-resources/fact-sheets/ribonucleic-acid-fact-sheet">NHGRI — דף מידע על RNA</a></li></ul></section>
+        <div class="pager"><a href="replication.html">→ הפרק הקודם</a><a href="../index.html#topics">חזרה למפת הנושאים ←</a></div>
+      </article>
+      <aside class="page-aside" aria-label="תוכן העמוד"><strong>בעמוד זה</strong><a href="#transcription">שעתוק</a><a href="#translation">קודונים ותרגום</a><a href="#protein-roles">תפקידי חלבונים</a><a href="#sources">מקורות</a></aside>
+    </div>
+  </main>
+  <footer><span>DNA Future Lab</span><span>פרק 06</span></footer>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/visualizations.js"></script>
+</body>
+</html>
