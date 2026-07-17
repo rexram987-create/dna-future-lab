@@ -13,8 +13,15 @@
     content="מעבדת DNA עתידית — אתר אינטראקטיבי על הקוד של החיים"
   >
 
+  <meta name="theme-color" content="#050810">
+
+  <meta property="og:title" content="DNA Future Lab | הקוד של החיים">
+  <meta property="og:description" content="מסע חזותי ואינטראקטיבי אל מנגנון ה־DNA.">
+  <meta property="og:type" content="website">
+
   <title>DNA Future Lab | הקוד של החיים</title>
 
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
@@ -52,6 +59,9 @@
   <aside
     class="sidebar"
     id="sidebar"
+    role="dialog"
+    aria-modal="true"
+    aria-label="מרכז הניווט"
     aria-hidden="true"
   >
 
@@ -70,7 +80,7 @@
 
     <nav class="side-nav" aria-label="ניווט ראשי">
 
-      <a class="active" href="index.html">
+      <a class="active" href="index.html" aria-current="page">
         עמוד הבית
       </a>
 
@@ -171,8 +181,8 @@
           </div>
 
           <div>
-            <strong>3.2B</strong>
-            <span>זוגות בסיסים בגנום</span>
+            <strong><bdi dir="ltr">≈3B</bdi></strong>
+            <span>בסיסים בגנום אנושי הפלואידי</span>
           </div>
 
         </div>
@@ -407,3 +417,4 @@
 
 </body>
 </html>
+
