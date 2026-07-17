@@ -1,0 +1,134 @@
+"""Dependency-free structural checks for the static site."""
+
+from __future__ import annotations
+
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import urlsplit
+
+
+ROOT = Path(__file__).resolve().parents[1]
+HTML_FILES = [ROOT / "index.html", *sorted((ROOT / "pages").glob("*.html"))]
+
+
+class DocumentParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.ids: list[str] = []
+        self.links: list[str] = []
+        self.assets: list[str] = []
+        self.menu_buttons: list[dict[str, str | None]] = []
+        self.sidebars: list[dict[str, str | None]] = []
+        self.close_buttons: list[dict[str, str | None]] = []
+        self.meta_descriptions = 0
+        self.favicons = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+
+        if element_id := attributes.get("id"):
+            self.ids.append(element_id)
+
+        if tag == "a" and (href := attributes.get("href")):
+            self.links.append(href)
+
+        if tag == "script" and (source := attributes.get("src")):
+            self.assets.append(source)
+
+        if tag == "link" and (href := attributes.get("href")):
+            if attributes.get("rel") == "stylesheet":
+                self.assets.append(href)
+            if attributes.get("rel") == "icon":
+                self.assets.append(href)
+                self.favicons += 1
+
+        if tag == "meta" and attributes.get("name") == "description":
+            self.meta_descriptions += 1
+
+        classes = set((attributes.get("class") or "").split())
+        if tag == "button" and "menu-btn" in classes:
+            self.menu_buttons.append(attributes)
+        if tag == "aside" and "sidebar" in classes:
+            self.sidebars.append(attributes)
+        if tag == "button" and "close-btn" in classes:
+            self.close_buttons.append(attributes)
+
+
+def parse(path: Path) -> DocumentParser:
+    parser = DocumentParser()
+    parser.feed(path.read_text(encoding="utf-8"))
+    return parser
+
+
+def main() -> int:
+    errors: list[str] = []
+    parsed = {path: parse(path) for path in HTML_FILES}
+
+    for path, document in parsed.items():
+        relative = path.relative_to(ROOT)
+
+        if len(document.ids) != len(set(document.ids)):
+            errors.append(f"{relative}: duplicate id")
+
+        if document.meta_descriptions != 1:
+            errors.append(f"{relative}: expected one meta description")
+
+        if document.favicons != 1:
+            errors.append(f"{relative}: expected one favicon")
+
+        if len(document.menu_buttons) != 1:
+            errors.append(f"{relative}: expected one menu button")
+        else:
+            button = document.menu_buttons[0]
+            for attribute in ("aria-label", "aria-expanded", "aria-controls"):
+                if not button.get(attribute):
+                    errors.append(f"{relative}: menu button missing {attribute}")
+
+        if len(document.sidebars) != 1:
+            errors.append(f"{relative}: expected one sidebar")
+        else:
+            sidebar = document.sidebars[0]
+            for attribute in ("id", "aria-label", "aria-hidden", "aria-modal"):
+                if not sidebar.get(attribute):
+                    errors.append(f"{relative}: sidebar missing {attribute}")
+
+        if len(document.close_buttons) != 1 or not document.close_buttons[0].get("aria-label"):
+            errors.append(f"{relative}: close button needs an accessible label")
+
+        for href in document.links:
+            parsed_href = urlsplit(href)
+            if parsed_href.scheme or parsed_href.netloc:
+                continue
+
+            if href == "#":
+                errors.append(f"{relative}: placeholder link href=#")
+                continue
+
+            target = (path.parent / parsed_href.path).resolve() if parsed_href.path else path
+            if parsed_href.path and not target.is_file():
+                errors.append(f"{relative}: missing link target {href}")
+                continue
+
+            if parsed_href.fragment:
+                target_document = parsed.get(target) or parse(target)
+                if parsed_href.fragment not in target_document.ids:
+                    errors.append(f"{relative}: missing fragment target {href}")
+
+        for asset in document.assets:
+            target = (path.parent / asset).resolve()
+            if not target.is_file():
+                errors.append(f"{relative}: missing asset {asset}")
+
+    if errors:
+        print("Site checks failed:")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+
+    print(f"Site checks passed for {len(HTML_FILES)} HTML files.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
