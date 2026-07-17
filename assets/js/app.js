@@ -18,9 +18,27 @@ const closeButtons =
     "[data-close-menu]"
   );
 
+const focusableSelector = [
+  "a[href]",
+  "button:not([disabled])",
+  "[tabindex]:not([tabindex='-1'])"
+].join(",");
+
+let previousFocus = null;
+
+if (sidebar) {
+  sidebar.inert = true;
+}
+
 function openMenu() {
+  previousFocus = document.activeElement;
+
   sidebar?.classList.add("open");
   overlay?.classList.add("open");
+
+  if (sidebar) {
+    sidebar.inert = false;
+  }
 
   sidebar?.setAttribute(
     "aria-hidden",
@@ -34,11 +52,19 @@ function openMenu() {
 
   document.body.style.overflow =
     "hidden";
+
+  sidebar
+    ?.querySelector(focusableSelector)
+    ?.focus();
 }
 
-function closeMenu() {
+function closeMenu(restoreFocus = true) {
   sidebar?.classList.remove("open");
   overlay?.classList.remove("open");
+
+  if (sidebar) {
+    sidebar.inert = true;
+  }
 
   sidebar?.setAttribute(
     "aria-hidden",
@@ -51,6 +77,13 @@ function closeMenu() {
   );
 
   document.body.style.overflow = "";
+
+  if (
+    restoreFocus &&
+    previousFocus instanceof HTMLElement
+  ) {
+    previousFocus.focus();
+  }
 }
 
 menuButton?.addEventListener(
@@ -61,15 +94,63 @@ menuButton?.addEventListener(
 closeButtons.forEach((button) => {
   button.addEventListener(
     "click",
-    closeMenu
+    () => closeMenu()
+  );
+});
+
+sidebar?.querySelectorAll("a").forEach((link) => {
+  link.addEventListener(
+    "click",
+    () => closeMenu(false)
   );
 });
 
 document.addEventListener(
   "keydown",
   (event) => {
-    if (event.key === "Escape") {
+    if (
+      event.key === "Escape" &&
+      sidebar?.classList.contains("open")
+    ) {
       closeMenu();
+    }
+
+    if (
+      event.key !== "Tab" ||
+      !sidebar?.classList.contains("open")
+    ) {
+      return;
+    }
+
+    const focusableElements = [
+      ...sidebar.querySelectorAll(
+        focusableSelector
+      )
+    ].filter(
+      (element) =>
+        !element.hasAttribute("disabled")
+    );
+
+    const firstElement =
+      focusableElements[0];
+
+    const lastElement =
+      focusableElements[
+        focusableElements.length - 1
+      ];
+
+    if (
+      event.shiftKey &&
+      document.activeElement === firstElement
+    ) {
+      event.preventDefault();
+      lastElement?.focus();
+    } else if (
+      !event.shiftKey &&
+      document.activeElement === lastElement
+    ) {
+      event.preventDefault();
+      firstElement?.focus();
     }
   }
 );
@@ -692,9 +773,12 @@ function initializeDnaAnimation() {
       "#d0b5ff"
     );
 
-    if (!reduceMotion) {
-      phase += 0.012;
+    if (reduceMotion) {
+      animationFrameId = null;
+      return;
     }
+
+    phase += 0.012;
 
     animationFrameId =
       window.requestAnimationFrame(
@@ -738,11 +822,37 @@ function initializeDnaAnimation() {
 
   function handleResize() {
     resizeCanvas();
+
+    if (reduceMotion) {
+      drawFrame();
+    }
+  }
+
+  function handleVisibilityChange() {
+    if (document.hidden) {
+      if (animationFrameId) {
+        window.cancelAnimationFrame(
+          animationFrameId
+        );
+      }
+
+      animationFrameId = null;
+      return;
+    }
+
+    if (!animationFrameId) {
+      drawFrame();
+    }
   }
 
   window.addEventListener(
     "resize",
     handleResize
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    handleVisibilityChange
   );
 
   resizeCanvas();
@@ -764,3 +874,4 @@ document.addEventListener(
   "DOMContentLoaded",
   initializeDnaAnimation
 );
+
