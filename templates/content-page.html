@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{PAGE_DESCRIPTION}}">
+  <title>{{PAGE_TITLE}} | DNA Future Lab</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/visualizations.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">דילוג לתוכן</a>
+  <div class="overlay" data-overlay></div>
+
+  <header class="topbar">
+    <button class="menu-btn" type="button" data-open-menu aria-controls="sidebar" aria-expanded="false">
+      <span aria-hidden="true">☰</span>
+      <span>תפריט</span>
+    </button>
+    <a class="brand" href="../index.html" aria-label="DNA Future Lab — עמוד הבית">
+      <span class="brand-mark" aria-hidden="true">DNA</span>
+      <span>Future Lab</span>
+    </a>
+  </header>
+
+  <aside class="sidebar" id="sidebar" role="dialog" aria-modal="true" aria-label="מרכז הניווט" aria-hidden="true">
+    <div class="sidebar-head">
+      <strong>מרכז הניווט</strong>
+      <button class="close-btn" type="button" data-close-menu aria-label="סגירת תפריט">×</button>
+    </div>
+    <nav class="side-nav" aria-label="ניווט ראשי" data-site-navigation></nav>
+  </aside>
+
+  <main id="main-content">
+    <section class="page-hero">
+      <p class="eyebrow">{{SECTION_NAME}}</p>
+      <h1>{{PAGE_TITLE}}</h1>
+      <p class="lead">{{SHORT_INTRODUCTION}}</p>
+      <div class="{{VISUAL_CLASS}}" aria-label="{{VISUAL_DESCRIPTION}}"></div>
+    </section>
+
+    <section class="content-layout" aria-label="תוכן הפרק">
+      <article class="content-stack">
+        <section class="content-card">
+          <h2>{{MAIN_HEADING}}</h2>
+          <p>{{MAIN_EXPLANATION}}</p>
+        </section>
+
+        <section class="content-card">
+          <h2>עובדות מעניינות</h2>
+          <div class="fact-list">
+            <article><strong>{{FACT_1_TITLE}}</strong><p>{{FACT_1_TEXT}}</p></article>
+            <article><strong>{{FACT_2_TITLE}}</strong><p>{{FACT_2_TEXT}}</p></article>
+          </div>
+        </section>
+
+        <section class="content-card knowledge-check">
+          <h2>בדיקה קצרה</h2>
+          <p>{{CHECK_QUESTION}}</p>
+          <!-- הוסיפו כאן אפשרויות ותשובה מוסברת. -->
+        </section>
+
+        <nav class="pager" aria-label="מעבר בין פרקים">
+          <a href="{{PREVIOUS_PAGE}}">העמוד הקודם</a>
+          <a href="{{NEXT_PAGE}}">העמוד הבא</a>
+        </nav>
+      </article>
+
+      <aside class="page-aside">
+        <section class="content-card">
+          <h2>בפרק הזה</h2>
+          <ul>
+            <li>{{LEARNING_GOAL_1}}</li>
+            <li>{{LEARNING_GOAL_2}}</li>
+            <li>{{LEARNING_GOAL_3}}</li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <span>DNA Future Lab</span>
+    <span>{{CHAPTER_NUMBER}}</span>
+  </footer>
+
+  <script src="../assets/js/navigation.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/visualizations.js"></script>
+</body>
+</html>
