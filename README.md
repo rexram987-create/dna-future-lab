@@ -1,40 +1,50 @@
 # DNA Future Lab
 
-אתר לימודי חזותי בעברית על DNA, גנים, שכפול וביטוי גנים.
+אתר לימודי חזותי בעברית על DNA, גנים, שכפול וביטוי גנים. האתר סטטי, רספונסיבי ומוכן לפרסום ב־GitHub Pages ללא תהליך build וללא תלויות צד שלישי.
 
 ## מה כלול
 
-- עמוד בית ושישה פרקי לימוד
-- תמיכה בעברית ובכיוון כתיבה מימין לשמאל
-- עיצוב רספונסיבי למחשב, לטאבלט ולטלפון
-- המחשות מונפשות של סליל DNA ותהליכים גנטיים
-- ניווט בין פרקי הלימוד
+- עמוד בית ושישה פרקי לימוד נפרדים
+- תמיכה מלאה ב־RTL ובמסכי מחשב, טאבלט וטלפון
+- המחשות Canvas של סליל כפול, זוגות בסיסים, שכפול ויצירת חלבון
+- תפריט צד נגיש עם ניהול מיקוד, תמיכה במקלדת ו־ARIA
+- תמיכה ב־`prefers-reduced-motion`
+- מקורות מדעיים של NHGRI ו־NCBI בכל פרק
+- בדיקות אוטומטיות לקישורים, נכסים, עוגנים ומבנה נגישות בסיסי
 
 ## הפעלה מקומית
 
-אפשר לפתוח את הקובץ `index.html` ישירות בדפדפן.
-
-אפשר גם להפעיל שרת מקומי:
+אפשר לפתוח את `index.html` ישירות בדפדפן. לבדיקת האתר דרך שרת מקומי:
 
 ```bash
 python -m http.server 8000
 ```
 
-לאחר מכן יש לפתוח בדפדפן:
+לאחר מכן פתחו `http://localhost:8000`.
 
-```text
-http://localhost:8000
+## בדיקות
+
+```bash
+python scripts/check_site.py
+node --check assets/js/app.js
+node --check assets/js/visualizations.js
 ```
+
+אותן בדיקות פועלות אוטומטית ב־GitHub Actions בכל push ובכל pull request.
 
 ## פרסום ב־GitHub Pages
 
-במסך ההגדרות של המאגר:
+במאגר: **Settings → Pages → Deploy from a branch**, בחרו את הענף `main` ואת התיקייה `/ (root)`.
 
-1. היכנסו אל Pages.
-2. בחרו פרסום מענף.
-3. בחרו בענף `main`.
-4. בחרו בתיקיית השורש.
+## מקורות מדעיים מרכזיים
+
+- [NHGRI — Deoxyribonucleic Acid (DNA) Fact Sheet](https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet)
+- [NCBI Bookshelf — DNA Replication Mechanisms](https://www.ncbi.nlm.nih.gov/books/NBK26850/)
+- [NCBI Bookshelf — From DNA to RNA](https://www.ncbi.nlm.nih.gov/books/NBK26887/)
+
+האתר מיועד ללימוד מבוא ואינו תחליף לספר לימוד או לייעוץ מקצועי.
 
 ## רישיון
 
-הפרויקט מופץ ברישיון [MIT](LICENSE).
+[MIT](LICENSE)
+
