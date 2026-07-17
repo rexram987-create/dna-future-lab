@@ -17,6 +17,11 @@
   box-sizing: border-box;
 }
 
+:focus-visible {
+  outline: 3px solid var(--mint);
+  outline-offset: 4px;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -203,7 +208,11 @@ body {
   background: #08101d;
 
   transform: translateX(105%);
-  transition: transform 0.28s ease;
+  visibility: hidden;
+
+  transition:
+    transform 0.28s ease,
+    visibility 0s linear 0.28s;
 
   box-shadow:
     -30px 0 80px
@@ -212,6 +221,8 @@ body {
 
 .sidebar.open {
   transform: translateX(0);
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .sidebar-head {
@@ -822,6 +833,19 @@ footer {
   color: #b6c9d6;
 }
 
+.source-list {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+}
+
+.source-list a {
+  color: var(--mint);
+}
+
+.source-list a:hover {
+  color: var(--cyan);
+}
+
 .fact-list {
   display: grid;
   grid-template-columns:
@@ -1035,3 +1059,4 @@ footer {
   }
 
 }
+
