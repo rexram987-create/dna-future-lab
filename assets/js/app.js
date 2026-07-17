@@ -18,6 +18,12 @@ const closeButtons =
     "[data-close-menu]"
   );
 
+const pinButton =
+  document.querySelector("[data-pin-menu]");
+
+const desktopMenuQuery =
+  window.matchMedia("(min-width: 1100px)");
+
 const focusableSelector = [
   "a[href]",
   "button:not([disabled])",
@@ -25,30 +31,99 @@ const focusableSelector = [
 ].join(",");
 
 let previousFocus = null;
+let pinPreference = false;
+
+try {
+  pinPreference =
+    window.localStorage.getItem(
+      "dna-navigation-pinned"
+    ) === "true";
+} catch {
+  pinPreference = false;
+}
 
 if (sidebar) {
   sidebar.inert = true;
 }
 
-function openMenu() {
-  previousFocus = document.activeElement;
+function isMenuPinned() {
+  return (
+    desktopMenuQuery.matches &&
+    pinPreference
+  );
+}
 
-  sidebar?.classList.add("open");
-  overlay?.classList.add("open");
+function setPinPreference(value) {
+  pinPreference = value;
+
+  try {
+    window.localStorage.setItem(
+      "dna-navigation-pinned",
+      String(value)
+    );
+  } catch {
+    // האתר נשאר פעיל גם כאשר אחסון מקומי חסום.
+  }
+
+  updatePinnedMenu();
+}
+
+function setMenuOpen(open) {
+  sidebar?.classList.toggle("open", open);
 
   if (sidebar) {
-    sidebar.inert = false;
+    sidebar.inert = !open;
   }
 
   sidebar?.setAttribute(
     "aria-hidden",
-    "false"
+    String(!open)
   );
 
   menuButton?.setAttribute(
     "aria-expanded",
-    "true"
+    String(open)
   );
+}
+
+function updatePinnedMenu() {
+  const pinned = isMenuPinned();
+
+  document.body.classList.toggle(
+    "nav-pinned",
+    pinned
+  );
+
+  pinButton?.setAttribute(
+    "aria-pressed",
+    String(pinPreference)
+  );
+
+  const pinLabel = pinButton?.querySelector(
+    ".pin-menu-label"
+  );
+
+  if (pinLabel) {
+    pinLabel.textContent = pinPreference
+      ? "ביטול הצמדת התפריט"
+      : "הצמדת התפריט במחשב";
+  }
+
+  overlay?.classList.remove("open");
+  document.body.style.overflow = "";
+
+  setMenuOpen(pinned);
+}
+
+function openMenu() {
+  if (isMenuPinned()) {
+    return;
+  }
+
+  previousFocus = document.activeElement;
+
+  setMenuOpen(true);
+  overlay?.classList.add("open");
 
   document.body.style.overflow =
     "hidden";
@@ -58,23 +133,16 @@ function openMenu() {
     ?.focus();
 }
 
-function closeMenu(restoreFocus = true) {
-  sidebar?.classList.remove("open");
-  overlay?.classList.remove("open");
-
-  if (sidebar) {
-    sidebar.inert = true;
+function closeMenu(
+  restoreFocus = true,
+  force = false
+) {
+  if (isMenuPinned() && !force) {
+    return;
   }
 
-  sidebar?.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  menuButton?.setAttribute(
-    "aria-expanded",
-    "false"
-  );
+  setMenuOpen(false);
+  overlay?.classList.remove("open");
 
   document.body.style.overflow = "";
 
@@ -94,30 +162,55 @@ menuButton?.addEventListener(
 closeButtons.forEach((button) => {
   button.addEventListener(
     "click",
-    () => closeMenu()
+    () => {
+      if (
+        isMenuPinned() &&
+        button.classList.contains("close-btn")
+      ) {
+        setPinPreference(false);
+        menuButton?.focus();
+      } else {
+        closeMenu();
+      }
+    }
   );
 });
 
 sidebar?.querySelectorAll("a").forEach((link) => {
   link.addEventListener(
     "click",
-    () => closeMenu(false)
+    () => {
+      if (!isMenuPinned()) {
+        closeMenu(false);
+      }
+    }
   );
 });
+
+pinButton?.addEventListener("click", () => {
+  setPinPreference(!pinPreference);
+});
+
+desktopMenuQuery.addEventListener(
+  "change",
+  updatePinnedMenu
+);
 
 document.addEventListener(
   "keydown",
   (event) => {
     if (
       event.key === "Escape" &&
-      sidebar?.classList.contains("open")
+      sidebar?.classList.contains("open") &&
+      !isMenuPinned()
     ) {
       closeMenu();
     }
 
     if (
       event.key !== "Tab" ||
-      !sidebar?.classList.contains("open")
+      !sidebar?.classList.contains("open") ||
+      isMenuPinned()
     ) {
       return;
     }
@@ -128,7 +221,8 @@ document.addEventListener(
       )
     ].filter(
       (element) =>
-        !element.hasAttribute("disabled")
+        !element.hasAttribute("disabled") &&
+        !element.closest("[hidden]")
     );
 
     const firstElement =
@@ -154,6 +248,8 @@ document.addEventListener(
     }
   }
 );
+
+updatePinnedMenu();
 
 /*
   אנימציית סליל DNA כפול
@@ -874,4 +970,3 @@ document.addEventListener(
   "DOMContentLoaded",
   initializeDnaAnimation
 );
-
