@@ -255,21 +255,113 @@ body {
   overflow-y: auto;
   overscroll-behavior: contain;
 
-  padding: 16px 14px 40px;
+  padding: 0 14px 40px;
 }
 
-.side-nav p {
-  margin: 24px 12px 8px;
+.nav-tools {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+
+  padding: 16px 0 12px;
+
+  background: linear-gradient(180deg, #07131d 82%, transparent);
+}
+
+.nav-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--line);
+  border-radius: 12px;
+
+  background: rgba(3, 13, 21, 0.82);
+}
+
+.nav-search:focus-within {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(114, 240, 255, 0.1);
+}
+
+.nav-search input {
+  min-width: 0;
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.nav-search input::placeholder {
+  color: #7f98a9;
+}
+
+.nav-search-status {
+  min-height: 20px;
+  margin: 7px 4px 0;
+
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.nav-home {
+  margin-bottom: 10px;
+}
+
+.nav-group {
+  border-top: 1px solid rgba(114, 240, 255, 0.1);
+}
+
+.nav-group summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 8px;
+
+  cursor: pointer;
+  list-style: none;
 
   color: var(--cyan);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
 }
 
-.side-nav a {
-  display: block;
+.nav-group summary::-webkit-details-marker {
+  display: none;
+}
 
-  padding: 12px 14px;
+.nav-group summary::after {
+  margin-right: auto;
+
+  content: "⌄";
+  transition: transform 160ms ease;
+}
+
+.nav-group[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.nav-group-items {
+  display: grid;
+  gap: 3px;
+
+  padding-bottom: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 44px;
+  padding: 10px 12px;
 
   border: 1px solid transparent;
   border-radius: 10px;
@@ -278,14 +370,78 @@ body {
   text-decoration: none;
 }
 
-.side-nav a:hover,
-.side-nav a.active {
+.nav-item:hover,
+.nav-item.active {
   color: #ffffff;
 
   border-color: var(--line);
 
   background:
     rgba(114, 240, 255, 0.08);
+}
+
+.nav-item.active {
+  box-shadow: inset -3px 0 0 var(--cyan);
+}
+
+.nav-item.is-disabled {
+  cursor: default;
+
+  color: #758998;
+}
+
+.nav-item.is-disabled:hover {
+  border-color: transparent;
+  background: transparent;
+}
+
+.nav-item-icon {
+  width: 24px;
+
+  color: var(--cyan);
+  text-align: center;
+}
+
+.nav-item-label {
+  flex: 1;
+}
+
+.nav-item-status {
+  padding: 2px 6px;
+
+  border: 1px solid rgba(114, 240, 255, 0.15);
+  border-radius: 999px;
+
+  font-size: 0.62rem;
+}
+
+.nav-item[hidden],
+.nav-group[hidden] {
+  display: none;
+}
+
+.pin-menu {
+  display: none;
+  align-items: center;
+  gap: 9px;
+
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 12px;
+
+  cursor: pointer;
+
+  border: 1px solid var(--line);
+  border-radius: 10px;
+
+  background: rgba(114, 240, 255, 0.05);
+  color: var(--text);
+  font: inherit;
+}
+
+.pin-menu[aria-pressed="true"] {
+  border-color: var(--cyan);
+  color: var(--cyan);
 }
 
 /* מבנה כללי */
@@ -919,6 +1075,57 @@ footer {
 
 /* טאבלטים */
 
+@media (min-width: 1100px) {
+
+  .pin-menu {
+    display: flex;
+  }
+
+  body.nav-pinned .sidebar {
+    width: 360px;
+
+    visibility: visible;
+    transform: translateX(0);
+    transition: none;
+
+    box-shadow: none;
+  }
+
+  body.nav-pinned .overlay {
+    display: none;
+  }
+
+  body.nav-pinned .menu-btn {
+    display: none;
+  }
+
+  body.nav-pinned .topbar {
+    padding-right: 390px;
+  }
+
+  body.nav-pinned main,
+  body.nav-pinned footer {
+    width: min(var(--max), calc(100% - 400px));
+    margin-right: 380px;
+    margin-left: 20px;
+  }
+
+  body.nav-pinned .hero,
+  body.nav-pinned .content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  body.nav-pinned .page-aside {
+    position: static;
+    order: -1;
+  }
+
+  body.nav-pinned .topic-grid,
+  body.nav-pinned .timeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
 
   .hero {
@@ -1059,4 +1266,3 @@ footer {
   }
 
 }
-
