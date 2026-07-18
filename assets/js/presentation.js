@@ -2,10 +2,18 @@
 
 document.querySelectorAll("[data-presentation]").forEach((presentation) => {
   const slides = [...presentation.querySelectorAll("[data-slide]")];
-  const previousButton = presentation.querySelector("[data-slide-prev]");
-  const nextButton = presentation.querySelector("[data-slide-next]");
-  const counter = presentation.querySelector("[data-slide-counter]");
-  const progress = presentation.querySelector("[data-slide-progress]");
+  const previousButton = presentation.querySelector(
+    "[data-slide-prev], [data-presentation-prev]"
+  );
+  const nextButton = presentation.querySelector(
+    "[data-slide-next], [data-presentation-next]"
+  );
+  const counter = presentation.querySelector(
+    "[data-slide-counter], [data-presentation-count]"
+  );
+  const progress = presentation.querySelector(
+    "[data-slide-progress], [data-presentation-bar]"
+  );
 
   if (!slides.length) {
     return;
