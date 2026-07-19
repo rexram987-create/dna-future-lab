@@ -20,7 +20,7 @@
   <div class="overlay" data-close-menu></div>
   <aside class="sidebar" id="sidebar" role="dialog" aria-modal="true" aria-label="מרכז הניווט" aria-hidden="true">
     <div class="sidebar-head"><strong>מרכז הניווט</strong><button class="close-btn" type="button" data-close-menu aria-label="סגירת תפריט">×</button></div>
-    <nav class="side-nav" aria-label="ניווט ראשי"><a href="../index.html">עמוד הבית</a><a href="what-is-dna.html">מהו DNA?</a><a href="double-helix.html">מבנה הסליל הכפול</a><a href="bases.html">הבסיסים החנקניים</a><a href="genes-chromosomes.html">גנים וכרומוזומים</a><a class="active" href="replication.html" aria-current="page">שכפול DNA</a><a href="protein-synthesis.html">מ־DNA לחלבון</a></nav>
+    <nav class="side-nav" aria-label="ניווט ראשי"></nav>
   </aside>
 
   <main>
@@ -33,13 +33,10 @@
           <span class="visual-label bottom">פתיחה • התאמה • בנייה</span>
         </section>
 
-        <section class="presentation" id="presentation" data-presentation aria-label="מצגת לימודית על שלבי שכפול DNA" tabindex="0">
+        <section class="presentation presentation-illustrated" id="presentation" data-presentation aria-label="מצגת חזותית על שלבי שכפול DNA" tabindex="0">
           <div class="presentation-header">
-            <div>
-              <span>POWERPOINT LEARNING CARDS</span>
-              <h2>שכפול DNA — שלב אחר שלב</h2>
-            </div>
-            <span>השתמשו בכפתורים או בחיצי המקלדת</span>
+            <div><span>VISUAL LEARNING DECK</span><h2>שכפול DNA — שלב אחר שלב</h2></div>
+            <span>איור, הסבר ומקרא בכל שלב</span>
           </div>
 
           <div class="presentation-stage" aria-live="polite">
@@ -48,87 +45,163 @@
                 <span class="presentation-kicker">שקופית 01 • הכנה לחלוקת התא</span>
                 <h3 tabindex="-1">מדוע ה־DNA משוכפל?</h3>
                 <p>לפני שתא מתחלק, עליו ליצור עותק נוסף של כל המידע הגנטי שלו.</p>
-                <ul class="presentation-bullets"><li>השכפול מתרחש לפני חלוקת התא.</li><li>כל תא בת מקבל גנום שלם.</li><li>הדיוק חיוני לתפקוד תקין של התאים.</li></ul>
+                <ul class="presentation-bullets"><li>השכפול מתרחש לפני חלוקת התא.</li><li>כל תא בת מקבל גנום שלם.</li><li>הדיוק חיוני לתפקוד תקין.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-result"><div><strong>1</strong><span>מולקולת מקור</span></div><div><strong>2</strong><span>עותקים חדשים</span></div></div></div>
+              <div class="presentation-visual svg-visual" aria-label="תא אחד מעתיק את ה-DNA לפני יצירת שני תאי בת">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep1title rep1desc">
+                  <title id="rep1title">הכפלת DNA לפני חלוקת התא</title><desc id="rep1desc">תא מקור עם מולקולת DNA אחת, חץ שכפול, ושני תאי בת שכל אחד מהם מקבל עותק.</desc>
+                  <defs><marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" class="svg-arrow-fill"/></marker></defs>
+                  <circle cx="105" cy="145" r="70" class="svg-cell"/><circle cx="105" cy="145" r="34" class="svg-nucleus"/>
+                  <path d="M88 126 C120 135 88 154 120 164" class="svg-dna-old"/><path d="M120 126 C88 135 120 154 88 164" class="svg-dna-new"/>
+                  <text x="105" y="245" class="svg-label">תא מקור</text>
+                  <path d="M190 145 H300" class="svg-arrow" marker-end="url(#arrow1)"/><text x="245" y="125" class="svg-note">שכפול DNA</text>
+                  <circle cx="385" cy="90" r="52" class="svg-cell"/><circle cx="385" cy="90" r="25" class="svg-nucleus"/>
+                  <circle cx="385" cy="210" r="52" class="svg-cell"/><circle cx="385" cy="210" r="25" class="svg-nucleus"/>
+                  <path d="M374 78 C396 84 374 96 396 102 M396 78 C374 84 396 96 374 102" class="svg-dna-old"/>
+                  <path d="M374 198 C396 204 374 216 396 222 M396 198 C374 204 396 216 374 222" class="svg-dna-new"/>
+                  <text x="385" y="278" class="svg-label">שני תאי בת</text>
+                </svg>
+                <div class="svg-legend"><span><i class="legend-old"></i>DNA מקורי</span><span><i class="legend-new"></i>DNA שנבנה</span></div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 02 • פתיחת הסליל</span>
                 <h3 tabindex="-1">הליקאז מפריד בין הגדילים</h3>
-                <p>האנזים הליקאז שובר את קשרי המימן שבין זוגות הבסיסים ויוצר מזלג שכפול.</p>
-                <ul class="presentation-bullets"><li>הסליל הכפול נפתח בהדרגה.</li><li>שני הגדילים נחשפים ומשמשים כתבניות.</li><li>חלבונים נוספים מייצבים את הגדילים הפתוחים.</li></ul>
+                <p>הליקאז שובר את קשרי המימן בין זוגות הבסיסים ויוצר מזלג שכפול.</p>
+                <ul class="presentation-bullets"><li>הסליל נפתח בהדרגה.</li><li>שני הגדילים נחשפים כתבניות.</li><li>חלבונים מייצבים את הגדילים הפתוחים.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-diagram"><span class="presentation-strand one"></span><span class="presentation-strand two"></span><span class="presentation-rung"></span><span class="presentation-rung"></span><span class="presentation-rung"></span><span class="presentation-rung"></span></div></div>
+              <div class="presentation-visual svg-visual" aria-label="הליקאז פותח את הסליל הכפול ויוצר מזלג שכפול">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep2title rep2desc">
+                  <title id="rep2title">הליקאז פותח את הסליל</title><desc id="rep2desc">סליל כפול סגור מימין, אנזים הליקאז במרכז ושני גדילים מופרדים משמאל.</desc>
+                  <path d="M470 55 C400 85 470 120 400 150 C470 180 400 215 470 245" class="svg-dna-old"/>
+                  <path d="M400 55 C470 85 400 120 470 150 C400 180 470 215 400 245" class="svg-dna-new"/>
+                  <g class="svg-rungs"><line x1="421" y1="75" x2="450" y2="75"/><line x1="412" y1="112" x2="459" y2="112"/><line x1="420" y1="150" x2="450" y2="150"/><line x1="412" y1="188" x2="459" y2="188"/><line x1="421" y1="225" x2="450" y2="225"/></g>
+                  <path d="M400 150 C320 130 265 95 170 55" class="svg-dna-old"/><path d="M400 150 C320 170 265 205 170 245" class="svg-dna-new"/>
+                  <path d="M170 55 L45 35 M170 245 L45 265" class="svg-template"/>
+                  <path d="M344 116 C380 116 393 135 393 150 C393 166 380 184 344 184 C321 184 306 169 306 150 C306 131 321 116 344 116 Z" class="svg-enzyme"/>
+                  <text x="348" y="154" class="svg-enzyme-text">הליקאז</text><text x="235" y="35" class="svg-note">גדילים נפרדים</text><text x="440" y="278" class="svg-note">סליל סגור</text>
+                </svg>
+                <div class="svg-legend"><span><i class="legend-enzyme"></i>אנזים</span><span><i class="legend-bond"></i>קשרי מימן</span></div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 03 • נקודת התחלה</span>
                 <h3 tabindex="-1">פריימר מספק קצה להתחלה</h3>
-                <p>DNA פולימראז אינו יכול להתחיל גדיל חדש מאפס. פרימאז יוצר מקטע RNA קצר המשמש כפריימר.</p>
-                <ul class="presentation-bullets"><li>הפריימר מסמן את נקודת ההתחלה.</li><li>הוא מספק קצה 3′ חופשי.</li><li>בהמשך מקטע ה־RNA מוחלף ב־DNA.</li></ul>
+                <p>DNA פולימראז אינו יכול להתחיל מאפס. פרימאז יוצר מקטע RNA קצר.</p>
+                <ul class="presentation-bullets"><li>הפריימר מסמן את נקודת ההתחלה.</li><li>הוא מספק קצה 3′ חופשי.</li><li>בהמשך הוא מוחלף ב־DNA.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-enzyme">PRIMER</div></div>
+              <div class="presentation-visual svg-visual" aria-label="פרימאז בונה פריימר RNA קצר על גדיל התבנית">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep3title rep3desc">
+                  <title id="rep3title">יצירת פריימר RNA</title><desc id="rep3desc">גדיל תבנית ארוך, אנזים פרימאז ומקטע RNA קצר המספק נקודת התחלה.</desc>
+                  <line x1="45" y1="165" x2="475" y2="165" class="svg-template"/><text x="55" y="145" class="svg-note">גדיל תבנית</text>
+                  <rect x="205" y="105" width="110" height="58" rx="25" class="svg-enzyme"/><text x="260" y="140" class="svg-enzyme-text">פרימאז</text>
+                  <line x1="240" y1="190" x2="330" y2="190" class="svg-rna"/><circle cx="245" cy="190" r="6" class="svg-rna-dot"/><circle cx="268" cy="190" r="6" class="svg-rna-dot"/><circle cx="291" cy="190" r="6" class="svg-rna-dot"/><circle cx="314" cy="190" r="6" class="svg-rna-dot"/>
+                  <text x="285" y="225" class="svg-label">פריימר RNA קצר</text><text x="335" y="178" class="svg-direction">3′</text><text x="225" y="178" class="svg-direction">5′</text>
+                </svg>
+                <div class="svg-legend"><span><i class="legend-template"></i>גדיל תבנית</span><span><i class="legend-rna"></i>RNA Primer</span></div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 04 • הארכת הגדיל</span>
                 <h3 tabindex="-1">DNA פולימראז מוסיף נוקלאוטידים</h3>
-                <p>הפולימראז מתקדם לאורך גדיל התבנית ומוסיף בסיסים משלימים לפי כללי הזיווג.</p>
-                <ul class="presentation-bullets"><li>A מזדווג עם T.</li><li>G מזדווג עם C.</li><li>הגדיל החדש נבנה תמיד בכיוון 5′→3′.</li></ul>
+                <p>הפולימראז קורא את התבנית ומוסיף בסיסים משלימים בכיוון 5′→3′.</p>
+                <ul class="presentation-bullets"><li>A מזדווג עם T.</li><li>G מזדווג עם C.</li><li>הבנייה מתקדמת מנקודת הפריימר.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-enzyme">DNA POL</div></div>
+              <div class="presentation-visual svg-visual" aria-label="DNA פולימראז מוסיף נוקלאוטידים משלימים לפי כללי הזיווג">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep4title rep4desc">
+                  <title id="rep4title">DNA פולימראז בונה גדיל חדש</title><desc id="rep4desc">גדיל תבנית עם אותיות בסיס, גדיל חדש משלים ואנזים פולימראז המתקדם לאורך הרצף.</desc>
+                  <line x1="55" y1="105" x2="465" y2="105" class="svg-template"/><line x1="120" y1="195" x2="395" y2="195" class="svg-new-strand"/>
+                  <g class="svg-bases"><text x="120" y="92">A</text><text x="185" y="92">G</text><text x="250" y="92">T</text><text x="315" y="92">C</text><text x="380" y="92">A</text><text x="120" y="225">T</text><text x="185" y="225">C</text><text x="250" y="225">A</text><text x="315" y="225">G</text><text x="380" y="225">T</text></g>
+                  <g class="svg-pair-lines"><line x1="120" y1="112" x2="120" y2="188"/><line x1="185" y1="112" x2="185" y2="188"/><line x1="250" y1="112" x2="250" y2="188"/><line x1="315" y1="112" x2="315" y2="188"/><line x1="380" y1="112" x2="380" y2="188"/></g>
+                  <rect x="330" y="125" width="125" height="58" rx="25" class="svg-enzyme"/><text x="392" y="159" class="svg-enzyme-text">DNA פולימראז</text><path d="M440 235 H300" class="svg-arrow" marker-end="url(#arrow1)"/><text x="370" y="260" class="svg-note">כיוון הבנייה 5′→3′</text>
+                </svg>
+                <div class="svg-legend"><span><i class="legend-template"></i>תבנית</span><span><i class="legend-new"></i>גדיל חדש</span></div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 05 • הגדיל המוביל</span>
                 <h3 tabindex="-1">בנייה רציפה</h3>
-                <p>בגדיל המוביל, כיוון הבנייה מתאים להתקדמות מזלג השכפול ולכן הסינתזה רציפה.</p>
-                <ul class="presentation-bullets"><li>נדרש בדרך כלל פריימר אחד.</li><li>הפולימראז מתקדם יחד עם המזלג.</li><li>הגדיל נבנה כמקטע ארוך ורציף.</li></ul>
+                <p>בגדיל המוביל, הפולימראז מתקדם יחד עם מזלג השכפול.</p>
+                <ul class="presentation-bullets"><li>נדרש בדרך כלל פריימר אחד.</li><li>הגדיל נבנה כמקטע ארוך.</li><li>הסינתזה מתקדמת ברצף.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-fragments"><span class="presentation-fragment"></span></div></div>
+              <div class="presentation-visual svg-visual" aria-label="הגדיל המוביל נבנה ברצף לכיוון מזלג השכפול">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep5title rep5desc">
+                  <title id="rep5title">בנייה רציפה של הגדיל המוביל</title><desc id="rep5desc">מזלג שכפול מימין, גדיל תבנית וגדיל חדש רציף הנבנה לכיוון המזלג.</desc>
+                  <path d="M465 55 C390 100 330 120 250 150" class="svg-template"/><path d="M465 245 C390 200 330 180 250 150" class="svg-template"/>
+                  <path d="M70 95 C150 108 230 122 330 135" class="svg-new-strand"/><circle cx="335" cy="136" r="28" class="svg-enzyme"/><text x="335" y="140" class="svg-small-enzyme-text">POL</text>
+                  <path d="M95 70 H300" class="svg-arrow" marker-end="url(#arrow1)"/><text x="195" y="52" class="svg-note">בנייה רציפה</text><text x="70" y="120" class="svg-direction">5′</text><text x="345" y="120" class="svg-direction">3′</text>
+                </svg>
+                <div class="svg-callout">הפולימראז מתקדם באותו כיוון שבו מזלג השכפול נפתח.</div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 06 • הגדיל המאחר</span>
                 <h3 tabindex="-1">קטעי אוקזקי נוצרים בנפרד</h3>
-                <p>בגלל הכיווניות ההפוכה, הגדיל המאחר נבנה במקטעים קצרים שכל אחד מהם מתחיל בפריימר חדש.</p>
-                <ul class="presentation-bullets"><li>המקטעים נקראים קטעי אוקזקי.</li><li>כל מקטע נבנה בכיוון 5′→3′.</li><li>הבנייה נראית מקוטעת אך מתרחשת במקביל.</li></ul>
+                <p>הגדיל המאחר נבנה במקטעים קצרים, מפני שהפולימראז עובד רק בכיוון 5′→3′.</p>
+                <ul class="presentation-bullets"><li>כל מקטע מתחיל בפריימר חדש.</li><li>המקטעים נקראים קטעי אוקזקי.</li><li>לבסוף הם מתחברים לגדיל רציף.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-fragments"><span class="presentation-fragment"></span><span class="presentation-fragment"></span><span class="presentation-fragment"></span></div></div>
+              <div class="presentation-visual svg-visual" aria-label="הגדיל המאחר נבנה בקטעי אוקזקי קצרים">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep6title rep6desc">
+                  <title id="rep6title">בניית הגדיל המאחר בקטעים</title><desc id="rep6desc">גדיל תבנית, שלושה פריימרים ושלושה קטעי אוקזקי נפרדים הנבנים הרחק ממזלג השכפול.</desc>
+                  <path d="M465 55 C390 100 330 120 250 150" class="svg-template"/><path d="M465 245 C390 200 330 180 250 150" class="svg-template"/>
+                  <line x1="100" y1="205" x2="185" y2="190" class="svg-new-strand"/><line x1="220" y1="185" x2="305" y2="170" class="svg-new-strand"/><line x1="340" y1="165" x2="410" y2="150" class="svg-new-strand"/>
+                  <line x1="92" y1="207" x2="108" y2="204" class="svg-rna"/><line x1="212" y1="187" x2="228" y2="184" class="svg-rna"/><line x1="332" y1="167" x2="348" y2="164" class="svg-rna"/>
+                  <text x="142" y="235" class="svg-note">קטע אוקזקי 1</text><text x="262" y="215" class="svg-note">קטע 2</text><text x="373" y="195" class="svg-note">קטע 3</text>
+                </svg>
+                <div class="svg-legend"><span><i class="legend-rna"></i>פריימר RNA</span><span><i class="legend-new"></i>קטע אוקזקי</span></div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 07 • חיבור והגהה</span>
                 <h3 tabindex="-1">ליגאז מחבר והפולימראז בודק</h3>
-                <p>לאחר החלפת הפריימרים, DNA ליגאז מחבר את המקטעים. מנגנוני הגהה מתקנים שגיאות רבות.</p>
-                <ul class="presentation-bullets"><li>ליגאז סוגר פערים בשלד הסוכר־פוספט.</li><li>הפולימראז מזהה חלק מהבסיסים השגויים.</li><li>מערכות תיקון נוספות משפרות את הדיוק.</li></ul>
+                <p>לאחר החלפת הפריימרים, ליגאז סוגר את הפערים ומערכות תיקון משפרות את הדיוק.</p>
+                <ul class="presentation-bullets"><li>ליגאז מחבר את קטעי אוקזקי.</li><li>הפולימראז מזהה טעויות רבות.</li><li>מערכות תיקון משלימות את ההגהה.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-enzyme">LIGASE</div></div>
+              <div class="presentation-visual svg-visual" aria-label="ליגאז מחבר קטעי DNA ומערכת ההגהה מתקנת בסיס שגוי">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep7title rep7desc">
+                  <title id="rep7title">חיבור קטעים והגהת טעויות</title><desc id="rep7desc">שלושה קטעי DNA עם פערים, אנזים ליגאז שסוגר אותם ובסיס שגוי המסומן ומוחלף.</desc>
+                  <line x1="55" y1="145" x2="165" y2="145" class="svg-new-strand"/><line x1="190" y1="145" x2="300" y2="145" class="svg-new-strand"/><line x1="325" y1="145" x2="465" y2="145" class="svg-new-strand"/>
+                  <circle cx="178" cy="145" r="25" class="svg-enzyme"/><text x="178" y="149" class="svg-small-enzyme-text">ליגאז</text><circle cx="313" cy="145" r="25" class="svg-enzyme"/><text x="313" y="149" class="svg-small-enzyme-text">ליגאז</text>
+                  <circle cx="400" cy="95" r="15" class="svg-error"/><text x="400" y="100" class="svg-error-text">!</text><path d="M400 112 V132" class="svg-error-line"/><text x="400" y="65" class="svg-note">בסיס שגוי מזוהה</text>
+                  <rect x="180" y="215" width="160" height="42" rx="16" class="svg-proof"/><text x="260" y="241" class="svg-proof-text">הגהה ותיקון ✓</text>
+                </svg>
+                <div class="svg-callout">חיבור + הגהה = גדיל רציף ומדויק יותר.</div>
+              </div>
             </section>
 
             <section class="presentation-slide" data-slide aria-hidden="true" inert>
               <div class="presentation-copy">
                 <span class="presentation-kicker">שקופית 08 • התוצאה</span>
                 <h3 tabindex="-1">שתי מולקולות חצי־שמרניות</h3>
-                <p>בסיום מתקבלות שתי מולקולות DNA דומות, שכל אחת מהן כוללת גדיל מקורי וגדיל חדש.</p>
-                <ul class="presentation-bullets"><li>כל גדיל מקור נשמר במולקולה אחת.</li><li>הגדיל השני נבנה מחדש.</li><li>כך נשמר המידע הגנטי מדור תאים אחד לבא.</li></ul>
+                <p>כל מולקולת DNA חדשה מכילה גדיל מקורי אחד וגדיל חדש אחד.</p>
+                <ul class="presentation-bullets"><li>הגדיל המקורי משמש תבנית.</li><li>הגדיל המשלים נבנה מחדש.</li><li>המידע הגנטי נשמר בין דורות תאים.</li></ul>
               </div>
-              <div class="presentation-visual" aria-hidden="true"><div class="presentation-result"><div><strong>ישן</strong><span>גדיל תבנית</span></div><div><strong>חדש</strong><span>גדיל משלים</span></div></div></div>
+              <div class="presentation-visual svg-visual" aria-label="שתי מולקולות DNA שכל אחת כוללת גדיל ישן וגדיל חדש">
+                <svg viewBox="0 0 520 300" role="img" aria-labelledby="rep8title rep8desc">
+                  <title id="rep8title">תוצאה חצי־שמרנית</title><desc id="rep8desc">שתי מולקולות DNA נפרדות, ובכל אחת גדיל כחול מקורי וגדיל ירוק חדש.</desc>
+                  <g transform="translate(70 25)"><path d="M45 10 C120 45 45 85 120 120 C45 155 120 195 45 235" class="svg-dna-old"/><path d="M120 10 C45 45 120 85 45 120 C120 155 45 195 120 235" class="svg-dna-new"/><text x="82" y="265" class="svg-label">מולקולה 1</text></g>
+                  <g transform="translate(300 25)"><path d="M45 10 C120 45 45 85 120 120 C45 155 120 195 45 235" class="svg-dna-old"/><path d="M120 10 C45 45 120 85 45 120 C120 155 45 195 120 235" class="svg-dna-new"/><text x="82" y="265" class="svg-label">מולקולה 2</text></g>
+                  <text x="260" y="28" class="svg-note">בכל מולקולה: גדיל ישן + גדיל חדש</text>
+                </svg>
+                <div class="svg-legend"><span><i class="legend-old"></i>גדיל מקורי</span><span><i class="legend-new"></i>גדיל חדש</span></div>
+              </div>
             </section>
           </div>
 
           <div class="presentation-controls">
-            <div class="presentation-buttons">
-              <button class="presentation-button" type="button" data-slide-prev aria-label="השקופית הקודמת">הקודם</button>
-              <button class="presentation-button" type="button" data-slide-next aria-label="השקופית הבאה">הבא</button>
-            </div>
+            <div class="presentation-buttons"><button class="presentation-button" type="button" data-slide-prev aria-label="השקופית הקודמת">הקודם</button><button class="presentation-button" type="button" data-slide-next aria-label="השקופית הבאה">הבא</button></div>
             <div class="presentation-progress" aria-hidden="true"><span data-slide-progress></span></div>
             <span class="presentation-counter" data-slide-counter>1 מתוך 8</span>
           </div>
@@ -144,7 +217,7 @@
         <section class="info-card" id="sources"><h2>מקורות להעמקה</h2><ul class="source-list"><li><a href="https://www.ncbi.nlm.nih.gov/books/NBK26850/">NCBI Bookshelf — מנגנוני שכפול DNA</a></li><li><a href="https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet">NHGRI — דף מידע על DNA</a></li></ul></section>
         <div class="pager"><a href="genes-chromosomes.html">→ הפרק הקודם</a><a href="protein-synthesis.html">הפרק הבא ←</a></div>
       </article>
-      <aside class="page-aside" aria-label="תוכן העמוד"><strong>בעמוד זה</strong><a href="#presentation">מצגת שלבי השכפול</a><a href="#replication-steps">שלבי השכפול</a><a href="#semi-conservative">שכפול חצי־שמרני</a><a href="#proofreading">הגהה ותיקון</a><a href="#sources">מקורות</a></aside>
+      <aside class="page-aside" aria-label="תוכן העמוד"><strong>בעמוד זה</strong><a href="#presentation">מצגת חזותית</a><a href="#replication-steps">שלבי השכפול</a><a href="#semi-conservative">שכפול חצי־שמרני</a><a href="#proofreading">הגהה ותיקון</a><a href="#sources">מקורות</a></aside>
     </div>
   </main>
   <footer><span>DNA Future Lab</span><span>פרק 05</span></footer>
